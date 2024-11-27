@@ -23,8 +23,7 @@ struct ContentView: View {
             NavigationView {
                 ScrollView {
                     LazyVGrid(columns: columns) {
-                        
-                            ForEach(singlePointList, id: \.id) { item in
+                        ForEach(singlePointList , id: \.id) { item in
                                 NavigationLink(
                                     destination: SinglePointDetailsView(singlePointItem: item),
                                     label: {
@@ -32,10 +31,8 @@ struct ContentView: View {
                                             .frame(height: height)
                                             .listItemTint(.gray)
                                     })
-                                
                             }
                         }
-                
                 }
               //  .navigationBarTitle("All Cocktails")
                 .navigationBarItems(leading:
@@ -52,25 +49,29 @@ struct ContentView: View {
                                             .frame(width: 330)
                                             .pickerStyle(SegmentedPickerStyle())
                                             .onChange(of: choice, perform: { value in
-                                                print(choice)
-                                                switch choice {
-                                                case 1:
-                                                    self.singlePointList = singlePointViewModel.singlePointList.filter{$0.type == "alcoholic"}
-                                                case 2:
-                                                    self.singlePointList = singlePointViewModel.singlePointList.filter{$0.type == "non-alcoholic"}
-                                                default:
-                                                    self.singlePointList = singlePointViewModel.singlePointList
-                                                }
+                                               
+                                                    switch choice {
+                                                    case 1:
+                                                        singlePointList = singlePointViewModel.singlePointList.filter{$0.type == "alcoholic"}
+                                                    case 2:
+                                                        singlePointList = singlePointViewModel.singlePointList.filter{$0.type == "non-alcoholic"}
+                                                    default:
+                                                        singlePointList = singlePointViewModel.singlePointList
+                                                    }
+                                                
                                             })
                                             
                                         }
-                                        .padding()
+                                        .padding(20)
                 )
+               
             }
         }
         .onAppear{
             singlePointViewModel.fetchSinglePointDetails()
-            self.singlePointList = singlePointViewModel.singlePointList
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.init(uptimeNanoseconds: 10)) {
+                self.singlePointList = self.singlePointViewModel.singlePointList
+            }
         }
     }
 }
