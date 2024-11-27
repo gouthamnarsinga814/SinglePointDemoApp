@@ -70,7 +70,7 @@ struct ContentView: View {
         }
         .onAppear{
             singlePointViewModel.fetchSinglePointDetails()
-            
+            self.singlePointList = singlePointViewModel.singlePointList
         }
     }
 }
